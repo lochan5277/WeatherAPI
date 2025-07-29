@@ -1,0 +1,18 @@
+{
+  "Jwt": {
+    "Key": "JWT_SECRET_KEY"
+  },
+  "ConnectionStrings": {
+    "MongoDb": "mongodb://localhost:27017"
+  },
+  "OpenWeatherMap": {
+    "ApiKey": "API_KEY"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}

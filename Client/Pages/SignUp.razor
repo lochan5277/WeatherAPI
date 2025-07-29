@@ -1,0 +1,100 @@
+@using WeatherApp_API.Client.Services;
+@using WeatherApp_API.Shared.Models;
+@page "/signup"
+@layout EmptyLayout
+@inject AuthService Auth
+@inject NavigationManager Nav
+
+<style>
+    body {
+        background-image: url('/Back.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+    }
+    .signup-form {
+        max-width: 400px;
+        margin: auto;
+        padding: 30px;
+        background-color: #00ffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        align-items: center;
+    }
+
+    .signup-form input {
+        margin: 8px 0;
+        padding: 8px;
+        width: 85%;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .signup-form button {
+        margin-top: 8px;
+        padding: 8cappx 20px;
+        width: 85%;
+        background-color: #555;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .signup-form button:hover {
+        background-color: #333;
+        color: white;
+    }
+
+    .signup-form p {
+        margin-top: 20px;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container mt-5 text-center signup-form">
+    <h2>Sign Up - WeatherApp</h2>
+    <input @bind="username" placeholder="Username" />
+    <input @bind="password" placeholder="Password" type="password" />
+    <button class="btn" @onclick="Register">Sign Up</button>
+    <h6 class="mt-3">Already have an account?</h6>
+    <button class="btn btn-success" @onclick='() => Nav.NavigateTo("/login")'>Log In</button>
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <p>@message</p>
+    }
+</div>
+
+
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string message = "";
+
+    private async Task Register()
+    {
+        message = ""; // Reset message
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            message = "Both fields are required.";
+            return;
+        }
+        var success = await Auth.Register(new UserDto { Username = username, Password = password });
+        if (success)
+        {
+            Nav.NavigateTo("/login");
+        }
+        else
+        {
+            message = "User already exists.";
+        }
+    }
+}

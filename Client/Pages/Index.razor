@@ -1,0 +1,128 @@
+﻿@page "/"
+@layout EmptyLayout
+@inject NavigationManager Nav
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<h2>WeatherApp 🌤️</h2>
+<h6>In a world where the winds can change at a moment's notice, the WeatherApp stands as your beacon of foresight, a reminder that knowledge of the weather is the best armor against nature's whims.</h6>
+<style>
+    body {
+        background-image: url('/Back.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+    }
+    h2, h6 {
+        color: white;
+        text-align: center;
+        margin-top: 15px;
+    }
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #00ffff;
+        border-radius: 10px;
+    }
+    .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        background-color: #5dbcd4;
+        cursor: pointer;
+    }
+    .logs {
+        color: white;
+    }
+</style>
+@if (isLoggedIn)
+{
+    Nav.NavigateTo("/home");
+}
+else
+{
+    <br>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"If you want to see the sunshine, you have to weather the storm."</p>
+                        <footer class="blockquote-footer">Frank Lane</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"The Earth has a fever, and the fever is rising."</p>
+                        <footer class="blockquote-footer">Al Gore</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"There’s no Planet B."</p>
+                        <footer class="blockquote-footer">Ban Ki-moon</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"A bank is a place where they lend you an umbrella in fair weather and ask for it back when it begins to rain."</p>
+                        <footer class="blockquote-footer">Robert Frost</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"A change in the weather is sufficient to recreate the world and ourselves."</p>
+                        <footer class="blockquote-footer">Marcel Proust</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card card-hover shadow-sm">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>"Everyone complains about the weather, but nobody ever seems to do anything about it."</p>
+                        <footer class="blockquote-footer">Willard Scott</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="mb-4 text-center logs">
+        <h6>Ready to explore the weather?</h6>
+        <h6>Login to get started!</h6>
+        <button class="btn btn-success me-2" @onclick='() => Nav.NavigateTo("/login")'>Log In</button>
+        <button class="btn btn-success me-2" @onclick='() => Nav.NavigateTo("/signup")'>Sign Up</button>
+    </div>
+}
+
+@code {
+    private bool isLoggedIn = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        isLoggedIn = !string.IsNullOrWhiteSpace(token);
+    }
+}
